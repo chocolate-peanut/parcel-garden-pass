@@ -10,7 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedGuardRouteImport } from './routes/_authenticated/guard'
+import { Route as AuthenticatedResidentRouteImport } from './routes/_authenticated/resident'
 import { Route as CTokenRouteImport } from './routes/c.$token'
 
 const IndexRoute = IndexRouteImport.update({
@@ -18,10 +21,24 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedGuardRoute = AuthenticatedGuardRouteImport.update({
+  id: '/guard',
+  path: '/guard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedResidentRoute = AuthenticatedResidentRouteImport.update({
+  id: '/resident',
+  path: '/resident',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const CTokenRoute = CTokenRouteImport.update({
   id: '/c/$token',
@@ -32,29 +49,44 @@ const CTokenRoute = CTokenRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/guard': typeof AuthenticatedGuardRoute
+  '/resident': typeof AuthenticatedResidentRoute
   '/c/$token': typeof CTokenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/guard': typeof AuthenticatedGuardRoute
+  '/resident': typeof AuthenticatedResidentRoute
   '/c/$token': typeof CTokenRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/guard': typeof AuthenticatedGuardRoute
+  '/_authenticated/resident': typeof AuthenticatedResidentRoute
   '/c/$token': typeof CTokenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/c/$token'
+  fullPaths: '/' | '/auth' | '/guard' | '/resident' | '/c/$token'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/c/$token'
-  id: '__root__' | '/' | '/auth' | '/c/$token'
+  to: '/' | '/auth' | '/guard' | '/resident' | '/c/$token'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/guard'
+    | '/_authenticated/resident'
+    | '/c/$token'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   CTokenRoute: typeof CTokenRoute
 }
@@ -68,12 +100,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/guard': {
+      id: '/_authenticated/guard'
+      path: '/guard'
+      fullPath: '/guard'
+      preLoaderRoute: typeof AuthenticatedGuardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/resident': {
+      id: '/_authenticated/resident'
+      path: '/resident'
+      fullPath: '/resident'
+      preLoaderRoute: typeof AuthenticatedResidentRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/c/$token': {
       id: '/c/$token'
@@ -85,8 +138,22 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedGuardRoute: typeof AuthenticatedGuardRoute
+  AuthenticatedResidentRoute: typeof AuthenticatedResidentRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedGuardRoute: AuthenticatedGuardRoute,
+  AuthenticatedResidentRoute: AuthenticatedResidentRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   CTokenRoute: CTokenRoute,
 }
