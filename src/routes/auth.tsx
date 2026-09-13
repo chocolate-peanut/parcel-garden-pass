@@ -10,9 +10,10 @@ import type { AppRole } from "@/lib/parbox";
 const ROLES: AppRole[] = ["resident", "guard", "admin"];
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    role: ROLES.includes(search.role as AppRole) ? (search.role as AppRole) : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { role?: AppRole } => {
+    const role = search["role"] as AppRole | undefined;
+    return role && ROLES.includes(role) ? { role } : {};
+  },
   head: () => ({
     meta: [
       { title: "Sign In — ParBox" },
