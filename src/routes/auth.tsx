@@ -28,11 +28,11 @@ export const Route = createFileRoute("/auth")({
 function AuthPage() {
   const { me, loading } = useMe();
   const navigate = useNavigate();
+  const { role = "resident" } = Route.useSearch();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
-  const [role, setRole] = useState<AppRole>("resident");
   const [busy, setBusy] = useState(false);
   const [pending, setPending] = useState(false);
 
@@ -102,23 +102,14 @@ function AuthPage() {
 
         <form onSubmit={submit} className="space-y-4">
           {mode === "signup" ? (
-            <>
-              <Field label="Full name">
-                <ClayInput
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Aisyah Rahman"
-                  required
-                />
-              </Field>
-              <Field label="I am a">
-                <ClaySelect value={role} onChange={(e) => setRole(e.target.value as AppRole)}>
-                  <option value="resident">Resident</option>
-                  <option value="guard">Security guard</option>
-                  <option value="admin">Building admin</option>
-                </ClaySelect>
-              </Field>
-            </>
+            <Field label="Full name">
+              <ClayInput
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder="Aisyah Rahman"
+                required
+              />
+            </Field>
           ) : null}
           <Field label="Email">
             <ClayInput
