@@ -16,6 +16,7 @@ import {
   isExpired,
   logAudit,
   PARCEL_SELECT,
+  unitLabel,
   type ParcelWithRefs,
   type StorageLocation,
   type Unit,
@@ -202,7 +203,7 @@ function IntakeForm({ guardId, guardName }: { guardId: string | null; guardName:
       <ClayCard className="space-y-5 text-center">
         <h2 className="text-xl font-extrabold">Parcel stored</h2>
         <p className="text-sm text-muted-foreground">
-          Unit {created.units?.unit_number} · {formatWhen(created.intake_ts)}
+          Unit {unitLabel(created.units)} · {formatWhen(created.intake_ts)}
         </p>
         <div className="flex justify-center">
           <QrImage value={claimLink(created.claim_token)} />
@@ -234,7 +235,7 @@ function IntakeForm({ guardId, guardName }: { guardId: string | null; guardName:
           <option value="">Select unit…</option>
           {(units.data ?? []).map((u) => (
             <option key={u.id} value={u.id}>
-              {u.building}-{u.unit_number} · Floor {u.floor}
+              {unitLabel(u)}
             </option>
           ))}
         </ClaySelect>
@@ -437,7 +438,7 @@ function ClaimPanel({ guardName, guardId }: { guardName: string; guardId: string
           <div className="flex items-center justify-between gap-3">
             <div>
               <p className="text-lg font-extrabold">
-                Unit {parcel.units?.building}-{parcel.units?.unit_number}
+                Unit {unitLabel(parcel.units)}
               </p>
               <p className="text-sm text-muted-foreground">
                 {parcel.couriers?.company_name ?? "Courier n/a"} ·{" "}
@@ -549,7 +550,7 @@ function RecentParcels() {
         <div key={p.id} className="clay flex items-center justify-between gap-3 p-4">
           <div className="min-w-0">
             <p className="truncate font-bold">
-              Unit {p.units?.building}-{p.units?.unit_number}
+              Unit {unitLabel(p.units)}
               {p.parcel_identifier ? ` · ${p.parcel_identifier}` : ""}
             </p>
             <p className="truncate text-sm text-muted-foreground">

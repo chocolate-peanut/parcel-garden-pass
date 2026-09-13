@@ -136,6 +136,26 @@ function RootComponent() {
     return () => sub.subscription.unsubscribe();
   }, [router, queryClient]);
 
+  // Auto sign-out after 30 minutes of inactivity.
+  useEffect(() => {
+    let lastActivity = Date.now();
+    const bump = () => {
+      lastActivity = Date.now();
+    };
+    const events = ["pointerdown", "keydown", "touchstart", "scroll"] as const;
+    events.forEach((e) => window.addEventListener(e, bump, { passive: true }));
+    const id = window.setInterval(() => {
+      if (Date.now() - lastActivity < 30 * 60 * 1000) return;
+      void supabase.auth.getSession().then(({ data }) => {
+        if (data.session) void supabase.auth.signOut();
+      });
+    }, 30 * 1000);
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, bump));
+      window.clearInterval(id);
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}

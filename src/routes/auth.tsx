@@ -3,11 +3,17 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Boxes } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { ClayButton, ClayCard, ClayInput, ClaySelect, Field } from "@/components/clay";
+import { ClayButton, ClayCard, ClayInput, Field } from "@/components/clay";
 import { useMe, homeForRole } from "@/hooks/useMe";
 import type { AppRole } from "@/lib/parbox";
 
+const ROLES: AppRole[] = ["resident", "guard", "admin"];
+
 export const Route = createFileRoute("/auth")({
+  validateSearch: (search: Record<string, unknown>): { role?: AppRole } => {
+    const role = search["role"] as AppRole | undefined;
+    return role && ROLES.includes(role) ? { role } : {};
+  },
   head: () => ({
     meta: [
       { title: "Sign In — ParBox" },
@@ -22,11 +28,11 @@ export const Route = createFileRoute("/auth")({
 function AuthPage() {
   const { me, loading } = useMe();
   const navigate = useNavigate();
+  const { role = "resident" } = Route.useSearch();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
-  const [role, setRole] = useState<AppRole>("resident");
   const [busy, setBusy] = useState(false);
   const [pending, setPending] = useState(false);
 
@@ -74,6 +80,10 @@ function AuthPage() {
       </div>
 
       <ClayCard className="space-y-5 p-6">
+        <p className="text-center text-sm text-muted-foreground">
+          {role === "guard" ? "Security guard" : role === "admin" ? "Building admin" : "Resident"}{" "}
+          · <Link to="/" className="font-bold text-primary underline">change</Link>
+        </p>
         <div className="clay-inset grid grid-cols-2 gap-1 p-1">
           {(["signin", "signup"] as const).map((m) => (
             <button
@@ -96,23 +106,14 @@ function AuthPage() {
 
         <form onSubmit={submit} className="space-y-4">
           {mode === "signup" ? (
-            <>
-              <Field label="Full name">
-                <ClayInput
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Aisyah Rahman"
-                  required
-                />
-              </Field>
-              <Field label="I am a">
-                <ClaySelect value={role} onChange={(e) => setRole(e.target.value as AppRole)}>
-                  <option value="resident">Resident</option>
-                  <option value="guard">Security guard</option>
-                  <option value="admin">Building admin</option>
-                </ClaySelect>
-              </Field>
-            </>
+            <Field label="Full name">
+              <ClayInput
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder="Aisyah Rahman"
+                required
+              />
+            </Field>
           ) : null}
           <Field label="Email">
             <ClayInput
