@@ -39,7 +39,7 @@ export const Route = createFileRoute("/_authenticated/guard")({
 function tokenFromInput(raw: string): string {
   const text = raw.trim();
   const match = text.match(/\/c\/([A-Za-z0-9]+)/);
-  return (match ? match[1] : text).trim();
+  return (match?.[1] ?? text).trim();
 }
 
 function GuardPage() {

@@ -106,7 +106,7 @@ function ResidentPage() {
         subtitle={
           me?.resident?.unit_id
             ? `Unit ${open[0]?.units?.unit_number ?? ""}`.trim()
-            : me?.fullName || undefined
+            : me?.fullName || ""
         }
       />
 
