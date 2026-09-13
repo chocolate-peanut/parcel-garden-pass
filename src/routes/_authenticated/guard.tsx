@@ -24,9 +24,9 @@ import {
 export const Route = createFileRoute("/_authenticated/guard")({
   head: () => ({
     meta: [
-      { title: "Guard desk — ParBox" },
+      { title: "Guard Desk — ParBox" },
       { name: "description", content: "Register incoming parcels and verify resident pickups." },
-      { property: "og:title", content: "Guard desk — ParBox" },
+      { property: "og:title", content: "Guard Desk — ParBox" },
       {
         property: "og:description",
         content: "Register incoming parcels and verify resident pickups.",
@@ -55,22 +55,21 @@ function GuardPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-5 py-8">
-      <AppBar title="Guard desk" subtitle={me?.fullName || "Lobby"} />
+      <AppBar title="Guard Desk" subtitle={me?.fullName || "Lobby"} />
 
       <div className="clay-inset mb-6 grid grid-cols-2 gap-1 p-1">
         {(
           [
-            ["intake", "Register parcel", PackagePlus],
-            ["claim", "Verify pickup", ScanLine],
+            ["intake", "Register Parcel", PackagePlus],
+            ["claim", "Verify Pickup", ScanLine],
           ] as const
         ).map(([key, label, Icon]) => (
           <button
             key={key}
             type="button"
             onClick={() => setTab(key)}
-            className={`flex items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-bold transition ${
-              tab === key ? "clay-soft bg-primary text-primary-foreground" : "text-muted-foreground"
-            }`}
+            className={`flex items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-bold transition ${tab === key ? "clay-soft bg-primary text-primary-foreground" : "text-muted-foreground"
+              }`}
           >
             <Icon className="size-4" />
             {label}
@@ -221,7 +220,7 @@ function IntakeForm({ guardId, guardName }: { guardId: string | null; guardName:
 
   return (
     <ClayCard className="space-y-4">
-      <Field label="Parcel identifier">
+      <Field label="Parcel Identifier">
         <ClayInput
           value={identifier}
           onChange={(e) => setIdentifier(e.target.value)}
@@ -230,7 +229,7 @@ function IntakeForm({ guardId, guardName }: { guardId: string | null; guardName:
       </Field>
       <QrScanner label="Scan parcel label" onResult={(text) => setIdentifier(text)} />
 
-      <Field label="Resident unit">
+      <Field label="Resident Unit">
         <ClaySelect value={unitId} onChange={(e) => setUnitId(e.target.value)}>
           <option value="">Select unit…</option>
           {(units.data ?? []).map((u) => (
@@ -242,10 +241,10 @@ function IntakeForm({ guardId, guardName }: { guardId: string | null; guardName:
       </Field>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Courier company">
+        <Field label="Courier Company">
           <ClayInput value={company} onChange={(e) => setCompany(e.target.value)} placeholder="J&T" />
         </Field>
-        <Field label="Tracking number">
+        <Field label="Tracking Number">
           <ClayInput
             value={tracking}
             onChange={(e) => setTracking(e.target.value)}
@@ -254,7 +253,7 @@ function IntakeForm({ guardId, guardName }: { guardId: string | null; guardName:
         </Field>
       </div>
 
-      <Field label="Storage location">
+      <Field label="Storage Location">
         <ClaySelect value={storageId} onChange={(e) => setStorageId(e.target.value)}>
           <option value="">Select shelf…</option>
           {(storages.data ?? []).map((s) => (
@@ -265,7 +264,7 @@ function IntakeForm({ guardId, guardName }: { guardId: string | null; guardName:
         </ClaySelect>
       </Field>
 
-      <Field label="Parcel photo">
+      <Field label="Parcel Photo">
         <label className="clay-inset flex cursor-pointer items-center gap-3 px-4 py-3 text-sm text-muted-foreground">
           <Camera className="size-5" />
           <span className="truncate">{photo ? photo.name : "Take or choose a photo"}</span>
@@ -282,16 +281,15 @@ function IntakeForm({ guardId, guardName }: { guardId: string | null; guardName:
       <button
         type="button"
         onClick={() => setDamaged((v) => !v)}
-        className={`clay-soft flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-bold ${
-          damaged ? "bg-destructive/15 text-destructive" : "bg-secondary text-secondary-foreground"
-        }`}
+        className={`clay-soft flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-bold ${damaged ? "bg-destructive/15 text-destructive" : "bg-secondary text-secondary-foreground"
+          }`}
       >
         <AlertTriangle className="size-5" />
         {damaged ? "Damage flagged" : "Flag visible damage"}
       </button>
 
       {damaged ? (
-        <Field label="Damage note">
+        <Field label="Damage Note">
           <ClayInput
             value={note}
             onChange={(e) => setNote(e.target.value)}
@@ -306,7 +304,7 @@ function IntakeForm({ guardId, guardName }: { guardId: string | null; guardName:
         disabled={save.isPending}
         onClick={() => save.mutate()}
       >
-        {save.isPending ? "Saving…" : "Register parcel"}
+        {save.isPending ? "Saving…" : "Register Parcel"}
       </ClayButton>
     </ClayCard>
   );
@@ -416,7 +414,7 @@ function ClaimPanel({ guardName, guardId }: { guardName: string; guardId: string
     <ClayCard className="space-y-4">
       {!parcel ? (
         <>
-          <Field label="Claim code">
+          <Field label="Claim Code">
             <ClayInput
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -424,14 +422,14 @@ function ClaimPanel({ guardName, guardId }: { guardName: string; guardId: string
             />
           </Field>
           <QrScanner
-            label="Scan resident QR"
+            label="Scan Resident QR"
             onResult={(text) => {
               setInput(text);
               lookup.mutate(text);
             }}
           />
           <ClayButton className="w-full" onClick={() => lookup.mutate(input)} disabled={lookup.isPending}>
-            {lookup.isPending ? "Looking up…" : "Look up parcel"}
+            {lookup.isPending ? "Looking up…" : "Look Up Parcel"}
           </ClayButton>
         </>
       ) : (
@@ -457,11 +455,11 @@ function ClaimPanel({ guardName, guardId }: { guardName: string; guardId: string
             </div>
           ) : (
             <>
-              <Field label="Claimant name">
+              <Field label="Claimant Name">
                 <ClayInput
                   value={claimant}
                   onChange={(e) => setClaimant(e.target.value)}
-                  placeholder="Name of person collecting"
+                  placeholder="Name of Person Collecting"
                 />
               </Field>
               <div className="clay-inset grid grid-cols-2 gap-1 p-1">
@@ -473,9 +471,8 @@ function ClaimPanel({ guardName, guardId }: { guardName: string; guardId: string
                     key={String(o.v)}
                     type="button"
                     onClick={() => setProxy(o.v)}
-                    className={`rounded-2xl px-4 py-2.5 text-sm font-bold ${
-                      proxy === o.v ? "clay-soft bg-primary text-primary-foreground" : "text-muted-foreground"
-                    }`}
+                    className={`rounded-2xl px-4 py-2.5 text-sm font-bold ${proxy === o.v ? "clay-soft bg-primary text-primary-foreground" : "text-muted-foreground"
+                      }`}
                   >
                     {o.label}
                   </button>
@@ -487,7 +484,7 @@ function ClaimPanel({ guardName, guardId }: { guardName: string; guardId: string
                 disabled={confirm.isPending}
                 onClick={() => confirm.mutate()}
               >
-                {confirm.isPending ? "Confirming…" : "Confirm pickup"}
+                {confirm.isPending ? "Confirming…" : "Confirm Pickup"}
               </ClayButton>
             </>
           )}

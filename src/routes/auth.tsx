@@ -10,10 +10,10 @@ import type { AppRole } from "@/lib/parbox";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — ParBox" },
-      { name: "description", content: "Sign in to ParBox to register or claim lobby parcels." },
-      { property: "og:title", content: "Sign in — ParBox" },
-      { property: "og:description", content: "Sign in to ParBox to register or claim lobby parcels." },
+      { title: "Sign In — ParBox" },
+      { name: "description", content: "Sign In to ParBox to register or claim lobby parcels." },
+      { property: "og:title", content: "Sign In — ParBox" },
+      { property: "og:description", content: "Sign In to ParBox to register or claim lobby parcels." },
     ],
   }),
   component: AuthPage,
@@ -70,7 +70,7 @@ function AuthPage() {
           <Boxes className="size-8" />
         </Link>
         <h1 className="text-3xl font-extrabold">ParBox</h1>
-        <p className="text-muted-foreground">Lobby parcel register</p>
+        <p className="text-muted-foreground">Lobby Parcel Register</p>
       </div>
 
       <ClayCard className="space-y-5 p-6">
@@ -80,18 +80,17 @@ function AuthPage() {
               key={m}
               type="button"
               onClick={() => setMode(m)}
-              className={`rounded-2xl px-4 py-2.5 text-sm font-bold transition ${
-                mode === m ? "clay-soft bg-primary text-primary-foreground" : "text-muted-foreground"
-              }`}
+              className={`rounded-2xl px-4 py-2.5 text-sm font-bold transition ${mode === m ? "clay-soft bg-primary text-primary-foreground" : "text-muted-foreground"
+                }`}
             >
-              {m === "signin" ? "Sign in" : "Create account"}
+              {m === "signin" ? "Sign In" : "Create Account"}
             </button>
           ))}
         </div>
 
         {pending ? (
           <p className="text-center text-sm text-muted-foreground">
-            We sent a confirmation link to <strong>{email}</strong>. Open it, then sign in.
+            We sent a confirmation link to <strong>{email}</strong>. Open it, then Sign In.
           </p>
         ) : null}
 
@@ -135,7 +134,7 @@ function AuthPage() {
             />
           </Field>
           <ClayButton type="submit" className="w-full" disabled={busy}>
-            {busy ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
+            {busy ? "Please wait…" : mode === "signin" ? "Sign In" : "Create Account"}
           </ClayButton>
         </form>
 

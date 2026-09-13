@@ -40,14 +40,13 @@ function Index() {
         </div>
         <h1 className="text-5xl font-extrabold">ParBox</h1>
         <p className="mx-auto max-w-md text-lg text-muted-foreground">
-          The lobby parcel logbook, without the paper. Register a parcel in a few taps, hand it over
-          with a scan.
+          Lobby Parcel Logbook
         </p>
         <Link
           to="/auth"
           className="clay-soft clay-press inline-flex items-center gap-2 bg-primary px-7 py-4 text-lg font-bold text-primary-foreground"
         >
-          Sign in to ParBox
+          Sign In to ParBox
         </Link>
       </header>
 

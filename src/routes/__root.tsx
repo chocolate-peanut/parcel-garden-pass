@@ -79,12 +79,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "ParBox — Lobby parcel register" },
+      { title: "ParBox — Lobby Parcel Register" },
       {
         name: "description",
         content: "ParBox replaces the lobby parcel logbook with fast QR intake and pickup.",
       },
-      { property: "og:title", content: "ParBox — Lobby parcel register" },
+      { property: "og:title", content: "ParBox — Lobby Parcel Register" },
       {
         property: "og:description",
         content: "ParBox replaces the lobby parcel logbook with fast QR intake and pickup.",
