@@ -7,7 +7,12 @@ import { ClayButton, ClayCard, ClayInput, ClaySelect, Field } from "@/components
 import { useMe, homeForRole } from "@/hooks/useMe";
 import type { AppRole } from "@/lib/parbox";
 
+const ROLES: AppRole[] = ["resident", "guard", "admin"];
+
 export const Route = createFileRoute("/auth")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    role: ROLES.includes(search.role as AppRole) ? (search.role as AppRole) : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Sign In — ParBox" },
