@@ -15,6 +15,7 @@ import {
   hoursLeft,
   isExpired,
   PARCEL_SELECT,
+  unitLabel,
   type NotificationRow,
   type ParcelWithRefs,
 } from "@/lib/parbox";
@@ -105,7 +106,7 @@ function ResidentPage() {
         title="My parcels"
         subtitle={
           me?.resident?.unit_id
-            ? `Unit ${open[0]?.units?.unit_number ?? ""}`.trim()
+            ? `Unit ${unitLabel(open[0]?.units ?? null)}`
             : me?.fullName || ""
         }
       />

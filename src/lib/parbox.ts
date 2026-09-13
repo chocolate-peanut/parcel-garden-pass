@@ -58,6 +58,13 @@ export function formatWhen(ts: string | null): string {
   });
 }
 
+export function unitLabel(
+  u: Pick<Unit, "building" | "floor" | "unit_number"> | null | undefined,
+): string {
+  if (!u) return "—";
+  return [u.building, u.floor, u.unit_number].filter((p) => p != null && p !== "").join("-");
+}
+
 export function claimLink(token: string): string {
   const origin = typeof window === "undefined" ? "" : window.location.origin;
   return `${origin}/c/${token}`;
