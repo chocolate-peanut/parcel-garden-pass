@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Boxes } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { ClayButton, ClayCard, ClayInput, ClaySelect, Field } from "@/components/clay";
+import { ClayButton, ClayCard, ClayInput, Field } from "@/components/clay";
 import { useMe, homeForRole } from "@/hooks/useMe";
 import type { AppRole } from "@/lib/parbox";
 
@@ -80,6 +80,10 @@ function AuthPage() {
       </div>
 
       <ClayCard className="space-y-5 p-6">
+        <p className="text-center text-sm text-muted-foreground">
+          {role === "guard" ? "Security guard" : role === "admin" ? "Building admin" : "Resident"}{" "}
+          · <Link to="/" className="font-bold text-primary underline">change</Link>
+        </p>
         <div className="clay-inset grid grid-cols-2 gap-1 p-1">
           {(["signin", "signup"] as const).map((m) => (
             <button
