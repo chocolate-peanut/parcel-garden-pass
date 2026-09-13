@@ -20,7 +20,17 @@ export function QrScanner({
     return () => {
       const s = scannerRef.current;
       scannerRef.current = null;
-      if (s) void s.stop().then(() => s.clear()).catch(() => undefined);
+      if (s) {
+        // stop() can throw synchronously when the scanner never started
+        void (async () => {
+          try {
+            await s.stop();
+            s.clear();
+          } catch {
+            /* already stopped */
+          }
+        })();
+      }
     };
   }, []);
 
