@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedGuardRouteImport } from './routes/_authenticated/guard'
 import { Route as AuthenticatedResidentRouteImport } from './routes/_authenticated/resident'
 import { Route as CTokenRouteImport } from './routes/c.$token'
@@ -29,6 +30,11 @@ const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedGuardRoute = AuthenticatedGuardRouteImport.update({
   id: '/guard',
@@ -49,6 +55,7 @@ const CTokenRoute = CTokenRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/guard': typeof AuthenticatedGuardRoute
   '/resident': typeof AuthenticatedResidentRoute
   '/c/$token': typeof CTokenRoute
@@ -56,6 +63,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/guard': typeof AuthenticatedGuardRoute
   '/resident': typeof AuthenticatedResidentRoute
   '/c/$token': typeof CTokenRoute
@@ -65,20 +73,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/guard': typeof AuthenticatedGuardRoute
   '/_authenticated/resident': typeof AuthenticatedResidentRoute
   '/c/$token': typeof CTokenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/guard' | '/resident' | '/c/$token'
+  fullPaths: '/' | '/auth' | '/admin' | '/guard' | '/resident' | '/c/$token'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/guard' | '/resident' | '/c/$token'
+  to: '/' | '/auth' | '/admin' | '/guard' | '/resident' | '/c/$token'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/admin'
     | '/_authenticated/guard'
     | '/_authenticated/resident'
     | '/c/$token'
@@ -114,6 +124,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/guard': {
       id: '/_authenticated/guard'
       path: '/guard'
@@ -139,11 +156,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedGuardRoute: typeof AuthenticatedGuardRoute
   AuthenticatedResidentRoute: typeof AuthenticatedResidentRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedGuardRoute: AuthenticatedGuardRoute,
   AuthenticatedResidentRoute: AuthenticatedResidentRoute,
 }

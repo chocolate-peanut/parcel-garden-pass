@@ -270,7 +270,7 @@ function DisputesTab({ actorName }: { actorName: string }) {
         actorType: "admin",
         actorName,
         action: `dispute_${outcome}`,
-        details: p.dispute_note ?? undefined,
+        details: p.dispute_note ?? "",
       });
       toast.success(outcome === "accepted" ? "Dispute accepted" : "Dispute rejected");
       await queryClient.invalidateQueries({ queryKey: ["admin-disputes"] });
