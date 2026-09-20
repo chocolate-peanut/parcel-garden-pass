@@ -16,6 +16,8 @@ export const Route = createFileRoute("/c/$token")({
         property: "og:description",
         content: "Show this ParBox pickup code at the lobby desk to collect the parcel.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: SharedClaim,

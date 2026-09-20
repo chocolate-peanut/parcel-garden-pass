@@ -12,12 +12,12 @@ export function AppBar({ title, subtitle }: { title: string; subtitle?: string }
   }
 
   return (
-    <header className="mb-6 flex items-center gap-3">
-      <div className="clay flex size-12 shrink-0 items-center justify-center bg-primary text-primary-foreground">
-        <Boxes className="size-6" />
+    <header className="mb-7 flex items-center gap-3 border-b border-border pb-5">
+      <div className="clay flex size-12 shrink-0 items-center justify-center bg-secondary/60 text-primary">
+        <Boxes className="size-6" strokeWidth={1.5} />
       </div>
       <div className="min-w-0 flex-1">
-        <h1 className="truncate text-2xl font-extrabold leading-tight">{title}</h1>
+        <h1 className="truncate text-2xl font-bold leading-tight">{title}</h1>
         {subtitle ? (
           <p className="truncate text-sm text-muted-foreground">{subtitle}</p>
         ) : null}

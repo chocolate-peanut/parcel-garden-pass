@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { PackageCheck, QrCode, ShieldCheck, Boxes } from "lucide-react";
+import { ArrowUpRight, PackageCheck, QrCode, ShieldCheck, Boxes } from "lucide-react";
 import { useMe, homeForRole } from "@/hooks/useMe";
 import type { AppRole } from "@/lib/parbox";
 
@@ -19,6 +19,8 @@ export const Route = createFileRoute("/")({
         content:
           "ParBox replaces the paper parcel logbook: guards register parcels in seconds, residents claim with a QR code.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,
@@ -54,30 +56,35 @@ function Index() {
   }, [me, loading, navigate]);
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-3xl flex-col justify-center gap-8 px-5 py-14">
-      <header className="space-y-4 text-center">
-        <div className="clay mx-auto flex size-20 items-center justify-center bg-primary text-primary-foreground">
-          <Boxes className="size-10" />
+    <main className="mx-auto flex min-h-screen max-w-5xl flex-col justify-center px-5 py-10 sm:px-8">
+      <div className="mb-10 flex flex-col items-center text-center sm:mb-14">
+        <div className="clay mb-5 flex size-16 items-center justify-center bg-secondary/60 text-foreground">
+          <Boxes className="size-8" strokeWidth={1.5} />
         </div>
-        <h1 className="text-5xl font-extrabold">ParBox</h1>
-        <p className="mx-auto max-w-md text-lg text-muted-foreground">Lobby Parcel Logbook</p>
-        <p className="text-sm font-semibold text-muted-foreground">Choose how you use ParBox:</p>
-      </header>
+        <h1 className="text-4xl font-bold sm:text-5xl">ParBox</h1>
+        <p className="mt-3 text-sm font-medium uppercase text-muted-foreground">Lobby Parcel Register</p>
+      </div>
 
-      <section className="grid gap-4 sm:grid-cols-3">
+      <section className="grid w-full gap-4 md:grid-cols-3 md:gap-5">
         {OPTIONS.map(({ role, icon: Icon, title, text }) => (
           <Link
             key={role}
             to="/auth"
             search={{ role }}
-            className="clay clay-press block space-y-2 p-6 text-center transition-transform hover:-translate-y-1"
+            className="clay clay-press group flex min-h-64 flex-col items-center p-7 text-center transition-transform duration-300 hover:-translate-y-1"
           >
-            <Icon className="mx-auto size-8 text-primary" />
-            <h2 className="text-lg font-bold">{title}</h2>
-            <p className="text-sm text-muted-foreground">{text}</p>
+            <span className="clay-inset mb-6 flex size-14 items-center justify-center rounded-full text-primary transition-colors group-hover:bg-primary/15">
+              <Icon className="size-6" strokeWidth={1.6} />
+            </span>
+            <h2 className="text-xl font-semibold">{title}</h2>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">{text}</p>
+            <span className="mt-auto flex items-center gap-1 pt-7 text-xs font-semibold uppercase text-primary">
+              Continue <ArrowUpRight className="size-3.5" />
+            </span>
           </Link>
         ))}
       </section>
+      <p className="mt-10 text-center text-xs text-muted-foreground">Secure parcel handover for your building</p>
     </main>
   );
 }

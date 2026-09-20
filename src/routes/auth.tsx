@@ -20,6 +20,8 @@ export const Route = createFileRoute("/auth")({
       { name: "description", content: "Sign In to ParBox to register or claim lobby parcels." },
       { property: "og:title", content: "Sign In — ParBox" },
       { property: "og:description", content: "Sign In to ParBox to register or claim lobby parcels." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: AuthPage,
@@ -72,10 +74,10 @@ function AuthPage() {
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center gap-6 px-5 py-10">
       <div className="text-center">
-        <Link to="/" className="clay mx-auto mb-4 flex size-16 items-center justify-center bg-primary text-primary-foreground">
-          <Boxes className="size-8" />
+        <Link to="/" className="clay mx-auto mb-5 flex size-16 items-center justify-center bg-secondary/60 text-primary">
+          <Boxes className="size-8" strokeWidth={1.5} />
         </Link>
-        <h1 className="text-3xl font-extrabold">ParBox</h1>
+        <h1 className="text-3xl font-bold">ParBox</h1>
         <p className="text-muted-foreground">Lobby Parcel Register</p>
       </div>
 
