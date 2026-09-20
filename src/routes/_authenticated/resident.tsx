@@ -30,6 +30,8 @@ export const Route = createFileRoute("/_authenticated/resident")({
         property: "og:description",
         content: "See your lobby parcels and share your pickup QR code.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: ResidentPage,

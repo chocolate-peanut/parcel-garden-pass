@@ -34,6 +34,8 @@ export const Route = createFileRoute("/_authenticated/admin")({
         property: "og:description",
         content: "Manage units and residents, resolve parcel disputes and review the audit trail.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: AdminPage,

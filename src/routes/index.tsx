@@ -19,6 +19,8 @@ export const Route = createFileRoute("/")({
         content:
           "ParBox replaces the paper parcel logbook: guards register parcels in seconds, residents claim with a QR code.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,

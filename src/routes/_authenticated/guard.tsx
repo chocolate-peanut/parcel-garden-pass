@@ -32,6 +32,8 @@ export const Route = createFileRoute("/_authenticated/guard")({
         property: "og:description",
         content: "Register incoming parcels and verify resident pickups.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: GuardPage,
