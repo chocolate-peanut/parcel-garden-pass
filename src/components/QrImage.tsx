@@ -18,7 +18,7 @@ export function QrImage({
     QRCode.toDataURL(value, {
       width: size * 2,
       margin: 1,
-      color: { dark: "#243d2e", light: "#ffffff" },
+      color: { dark: "#263640", light: "#f5f7f8" },
     })
       .then((url) => {
         if (active) setSrc(url);
@@ -32,7 +32,7 @@ export function QrImage({
   return (
     <div className={cn("clay inline-flex items-center justify-center bg-card p-4", className)}>
       {src ? (
-        <img src={src} width={size} height={size} alt="Parcel claim QR code" className="rounded-xl" />
+        <img src={src} width={size} height={size} alt="Parcel claim QR code" className="rounded-lg" />
       ) : (
         <div style={{ width: size, height: size }} className="clay-inset animate-pulse" />
       )}

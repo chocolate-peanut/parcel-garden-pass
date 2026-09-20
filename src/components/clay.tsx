@@ -16,10 +16,10 @@ type ClayButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const variants: Record<NonNullable<ClayButtonProps["variant"]>, string> = {
   primary: "clay-soft clay-press bg-primary text-primary-foreground",
-  soft: "clay-soft clay-press bg-secondary text-secondary-foreground",
+  soft: "clay-soft clay-press bg-secondary/80 text-secondary-foreground",
   accent: "clay-soft clay-press bg-accent text-accent-foreground",
-  danger: "clay-soft clay-press bg-destructive text-destructive-foreground",
-  ghost: "rounded-2xl text-muted-foreground hover:bg-secondary/60",
+  danger: "clay-soft clay-press bg-destructive/90 text-destructive-foreground",
+  ghost: "rounded-lg text-muted-foreground hover:bg-secondary/60 hover:text-foreground",
 };
 
 const sizes: Record<NonNullable<ClayButtonProps["size"]>, string> = {
@@ -37,7 +37,7 @@ export function ClayButton({
   return (
     <button
       className={cn(
-        "inline-flex items-center justify-center gap-2 font-semibold disabled:pointer-events-none disabled:opacity-50",
+        "inline-flex items-center justify-center gap-2 font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
         variants[variant],
         sizes[size],
         className,
