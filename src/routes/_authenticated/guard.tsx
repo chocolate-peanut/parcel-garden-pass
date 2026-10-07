@@ -67,16 +67,17 @@ function GuardPage() {
             ["claim", "Verify Pickup", ScanLine],
           ] as const
         ).map(([key, label, Icon]) => (
-          <button
+          <ClayButton
             key={key}
             type="button"
+            variant={tab === key ? "primary" : "ghost"}
+            aria-pressed={tab === key}
             onClick={() => setTab(key)}
-            className={`flex items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-bold transition ${tab === key ? "clay-soft bg-primary text-primary-foreground" : "text-muted-foreground"
-              }`}
+            className="min-h-12 px-2 text-sm"
           >
-            <Icon className="size-4" />
+            <Icon className="size-4 shrink-0" />
             {label}
-          </button>
+          </ClayButton>
         ))}
       </div>
 
@@ -267,29 +268,33 @@ function IntakeForm({ guardId, guardName }: { guardId: string | null; guardName:
         </ClaySelect>
       </Field>
 
-      <Field label="Parcel Photo">
-        <label className="clay-inset flex cursor-pointer items-center gap-3 px-4 py-3 text-sm text-muted-foreground">
-          <Camera className="size-5" />
-          <span className="truncate">{photo ? photo.name : "Take or choose a photo"}</span>
+      <div className="space-y-1.5">
+        <p className="text-sm font-semibold text-muted-foreground">Parcel Photo</p>
+        <label className="clay-inset relative flex cursor-pointer items-center gap-3 px-4 py-3 text-sm text-muted-foreground focus-within:ring-2 focus-within:ring-ring">
+          <Camera className="size-5 shrink-0" />
+          <span className="min-w-0 truncate">{photo ? photo.name : "Take or choose a photo"}</span>
           <input
             type="file"
             accept="image/*"
             capture="environment"
-            className="hidden"
+            aria-label="Parcel photo"
+            className="absolute inset-0 w-full cursor-pointer opacity-0"
             onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
           />
         </label>
-      </Field>
+      </div>
 
-      <button
+      <ClayButton
         type="button"
+        variant="soft"
+        aria-pressed={damaged}
         onClick={() => setDamaged((v) => !v)}
         className={`clay-soft flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-bold ${damaged ? "bg-destructive/15 text-destructive" : "bg-secondary text-secondary-foreground"
           }`}
       >
         <AlertTriangle className="size-5" />
         {damaged ? "Damage flagged" : "Flag visible damage"}
-      </button>
+      </ClayButton>
 
       {damaged ? (
         <Field label="Damage Note">
@@ -437,8 +442,8 @@ function ClaimPanel({ guardName, guardId }: { guardName: string; guardId: string
         </>
       ) : (
         <div className="space-y-4">
-          <div className="flex items-center justify-between gap-3">
-            <div>
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+            <div className="min-w-0">
               <p className="text-lg font-extrabold">
                 Unit {unitLabel(parcel.units)}
               </p>
@@ -470,15 +475,16 @@ function ClaimPanel({ guardName, guardId }: { guardName: string; guardId: string
                   { v: false, label: "Resident" },
                   { v: true, label: "Proxy" },
                 ].map((o) => (
-                  <button
+                  <ClayButton
                     key={String(o.v)}
                     type="button"
+                    variant={proxy === o.v ? "primary" : "ghost"}
+                    aria-pressed={proxy === o.v}
                     onClick={() => setProxy(o.v)}
-                    className={`rounded-2xl px-4 py-2.5 text-sm font-bold ${proxy === o.v ? "clay-soft bg-primary text-primary-foreground" : "text-muted-foreground"
-                      }`}
+                    size="sm"
                   >
                     {o.label}
-                  </button>
+                  </ClayButton>
                 ))}
               </div>
               <ClayButton

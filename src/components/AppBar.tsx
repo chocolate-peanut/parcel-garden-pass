@@ -12,7 +12,8 @@ export function AppBar({ title, subtitle }: { title: string; subtitle?: string }
   }
 
   return (
-    <header className="mb-7 flex items-center gap-3 border-b border-border pb-5">
+    <header className="mb-7 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border pb-5 sm:flex">
+      <div className="flex min-w-0 items-center gap-3 sm:flex-1">
       <div className="clay flex size-12 shrink-0 items-center justify-center bg-secondary/60 text-primary">
         <Boxes className="size-6" strokeWidth={1.5} />
       </div>
@@ -22,7 +23,8 @@ export function AppBar({ title, subtitle }: { title: string; subtitle?: string }
           <p className="truncate text-sm text-muted-foreground">{subtitle}</p>
         ) : null}
       </div>
-      <ClayButton variant="soft" size="sm" onClick={() => void signOut()} aria-label="Sign out">
+      </div>
+      <ClayButton variant="soft" size="sm" className="min-w-11 shrink-0" onClick={() => void signOut()} aria-label="Sign out" title="Sign out">
         <LogOut className="size-4" />
       </ClayButton>
     </header>

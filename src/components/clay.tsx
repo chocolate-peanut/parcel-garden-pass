@@ -1,5 +1,6 @@
 import type { ButtonHTMLAttributes, HTMLAttributes, InputHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { ChevronDown } from "lucide-react";
 
 export function ClayCard({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return <div className={cn("clay p-5", className)} {...props} />;
@@ -23,7 +24,7 @@ const variants: Record<NonNullable<ClayButtonProps["variant"]>, string> = {
 };
 
 const sizes: Record<NonNullable<ClayButtonProps["size"]>, string> = {
-  sm: "px-3 py-2 text-sm",
+  sm: "min-h-11 px-3 py-2 text-sm",
   md: "px-5 py-3 text-base",
   lg: "px-6 py-4 text-lg",
 };
@@ -37,7 +38,7 @@ export function ClayButton({
   return (
     <button
       className={cn(
-        "inline-flex items-center justify-center gap-2 font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+        "inline-flex min-w-0 items-center justify-center gap-2 font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
         variants[variant],
         sizes[size],
         className,
@@ -51,7 +52,7 @@ export function ClayInput({ className, ...props }: InputHTMLAttributes<HTMLInput
   return (
     <input
       className={cn(
-        "clay-inset w-full px-4 py-3 text-base text-foreground outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring/60",
+        "clay-inset min-w-0 w-full px-4 py-3 text-base text-foreground outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring/60",
         className,
       )}
       {...props}
@@ -61,7 +62,7 @@ export function ClayInput({ className, ...props }: InputHTMLAttributes<HTMLInput
 
 export function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <label className="block space-y-1.5">
+    <label className="block min-w-0 space-y-1.5">
       <span className="text-sm font-semibold text-muted-foreground">{label}</span>
       {children}
     </label>
@@ -73,12 +74,15 @@ export function ClaySelect({
   ...props
 }: React.SelectHTMLAttributes<HTMLSelectElement>) {
   return (
-    <select
-      className={cn(
-        "clay-inset w-full appearance-none px-4 py-3 text-base text-foreground outline-none focus:ring-2 focus:ring-ring/60",
-        className,
-      )}
-      {...props}
-    />
+    <span className="relative block min-w-0">
+      <select
+        className={cn(
+          "clay-inset min-w-0 w-full appearance-none pl-4 pr-10 py-3 text-base text-foreground outline-none focus:ring-2 focus:ring-ring/60",
+          className,
+        )}
+        {...props}
+      />
+      <ChevronDown aria-hidden="true" className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+    </span>
   );
 }

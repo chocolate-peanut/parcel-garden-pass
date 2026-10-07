@@ -74,7 +74,7 @@ function AuthPage() {
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center gap-6 px-5 py-10">
       <div className="text-center">
-        <Link to="/" className="clay mx-auto mb-5 flex size-16 items-center justify-center bg-secondary/60 text-primary">
+        <Link to="/" aria-label="ParBox home" className="clay mx-auto mb-5 flex size-16 items-center justify-center bg-secondary/60 text-primary">
           <Boxes className="size-8" strokeWidth={1.5} />
         </Link>
         <h1 className="text-3xl font-bold">ParBox</h1>
@@ -88,15 +88,18 @@ function AuthPage() {
         </p>
         <div className="clay-inset grid grid-cols-2 gap-1 p-1">
           {(["signin", "signup"] as const).map((m) => (
-            <button
+            <ClayButton
               key={m}
               type="button"
-              onClick={() => setMode(m)}
-              className={`rounded-2xl px-4 py-2.5 text-sm font-bold transition ${mode === m ? "clay-soft bg-primary text-primary-foreground" : "text-muted-foreground"
-                }`}
+              variant={mode === m ? "primary" : "ghost"}
+              aria-pressed={mode === m}
+              disabled={busy}
+              size="sm"
+              onClick={() => { setMode(m); setPending(false); }}
+              className="min-h-12 px-2"
             >
               {m === "signin" ? "Sign In" : "Create Account"}
-            </button>
+            </ClayButton>
           ))}
         </div>
 
@@ -110,6 +113,7 @@ function AuthPage() {
           {mode === "signup" ? (
             <Field label="Full name">
               <ClayInput
+                autoComplete="name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Aisyah Rahman"
@@ -120,6 +124,7 @@ function AuthPage() {
           <Field label="Email">
             <ClayInput
               type="email"
+              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
@@ -129,6 +134,7 @@ function AuthPage() {
           <Field label="Password">
             <ClayInput
               type="password"
+              autoComplete={mode === "signin" ? "current-password" : "new-password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
