@@ -133,9 +133,10 @@ function ResidentPage() {
       {unread.length ? (
         <section className="mb-6 space-y-3">
           {unread.map((n) => (
-            <button
+            <ClayButton
               key={n.id}
               type="button"
+              variant="ghost"
               onClick={() => void markRead(n.id)}
               className="clay flex w-full items-start gap-3 p-4 text-left"
             >
@@ -144,7 +145,7 @@ function ResidentPage() {
                 <span className="block font-bold">{n.title}</span>
                 <span className="block text-sm text-muted-foreground">{n.body}</span>
               </span>
-            </button>
+            </ClayButton>
           ))}
         </section>
       ) : null}

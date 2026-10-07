@@ -71,17 +71,18 @@ function AdminPage() {
 
       <div className="clay-inset mb-6 grid grid-cols-2 gap-1 p-1 sm:grid-cols-4">
         {TABS.map(({ id, label, icon: Icon }) => (
-          <button
+          <ClayButton
             key={id}
             type="button"
+            variant={tab === id ? "primary" : "ghost"}
+            aria-pressed={tab === id}
+            size="sm"
             onClick={() => setTab(id)}
-            className={`flex items-center justify-center gap-2 rounded-2xl px-3 py-2.5 text-sm font-bold transition ${
-              tab === id ? "clay-soft bg-primary text-primary-foreground" : "text-muted-foreground"
-            }`}
+            className="min-h-12 px-2"
           >
-            <Icon className="size-4" />
-            <span className="truncate">{label}</span>
-          </button>
+            <Icon className="size-4 shrink-0" />
+            <span>{label}</span>
+          </ClayButton>
         ))}
       </div>
 
@@ -181,7 +182,7 @@ function UnclaimedTab({ actorName }: { actorName: string }) {
               <span className="text-lg font-bold">{unitLabel(p.units)}</span>
               <StatusPill status={p.status} />
               <span
-                className={`ml-auto text-sm font-bold ${left <= 0 ? "text-destructive" : "text-warning-foreground"}`}
+                className={`ml-auto text-sm font-bold ${left <= 0 ? "text-destructive" : "text-warning"}`}
               >
                 {left <= 0 ? "Overdue" : `${Math.round(left)}h left`}
               </span>
@@ -466,11 +467,11 @@ function PeopleTab() {
         <ul className="max-h-72 space-y-2 overflow-auto">
           {(units.data ?? []).map((u) => (
             <li key={u.id} className="clay-inset flex items-center gap-2 px-3 py-2">
-              <span className="font-semibold">{unitLabel(u)}</span>
+              <span className="min-w-0 break-words font-semibold">{unitLabel(u)}</span>
               <ClayButton
                 size="sm"
                 variant="ghost"
-                className="ml-auto"
+                className="ml-auto shrink-0"
                 onClick={() => void removeUnit(u.id)}
               >
                 Remove
@@ -520,7 +521,7 @@ function PeopleTab() {
               <ClayButton
                 size="sm"
                 variant="ghost"
-                className="ml-auto"
+                className="ml-auto shrink-0"
                 onClick={() => void removeResident(r.id)}
               >
                 Remove
@@ -576,6 +577,7 @@ function AuditTab() {
   return (
     <div className="space-y-3">
       <ClayInput
+        aria-label="Filter audit trail"
         value={filter}
         onChange={(e) => setFilter(e.target.value)}
         placeholder="Filter by unit, parcel, person or action…"
