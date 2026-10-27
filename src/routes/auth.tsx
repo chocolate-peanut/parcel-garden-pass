@@ -31,12 +31,13 @@ function AuthPage() {
   const { me, loading } = useMe();
   const navigate = useNavigate();
   const { role = "resident" } = Route.useSearch();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<"signin" | "signup" | "forgot">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [busy, setBusy] = useState(false);
   const [pending, setPending] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
 
   useEffect(() => {
     if (!loading && me) void navigate({ to: homeForRole(me.role), replace: true });
@@ -46,6 +47,15 @@ function AuthPage() {
     e.preventDefault();
     setBusy(true);
     try {
+      if (mode === "forgot") {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/reset-password`,
+        });
+        if (error) throw error;
+        setResetSent(true);
+        toast.success("Password reset link sent — check your email.");
+        return;
+      }
       if (mode === "signup") {
         const { data, error } = await supabase.auth.signUp({
           email,
@@ -86,6 +96,7 @@ function AuthPage() {
           {role === "guard" ? "Security guard" : role === "admin" ? "Building admin" : "Resident"}{" "}
           · <Link to="/" className="font-bold text-primary underline">change</Link>
         </p>
+        {mode !== "forgot" ? (
         <div className="clay-inset grid grid-cols-2 gap-1 p-1">
           {(["signin", "signup"] as const).map((m) => (
             <ClayButton
@@ -95,17 +106,24 @@ function AuthPage() {
               aria-pressed={mode === m}
               disabled={busy}
               size="sm"
-              onClick={() => { setMode(m); setPending(false); }}
+              onClick={() => { setMode(m); setPending(false); setResetSent(false); }}
               className="min-h-12 px-2"
             >
               {m === "signin" ? "Sign In" : "Create Account"}
             </ClayButton>
           ))}
         </div>
+        ) : null}
 
         {pending ? (
           <p className="text-center text-sm text-muted-foreground">
             We sent a confirmation link to <strong>{email}</strong>. Open it, then Sign In.
+          </p>
+        ) : null}
+
+        {resetSent ? (
+          <p className="text-center text-sm text-muted-foreground">
+            We sent a password reset link to <strong>{email}</strong>. Open it to set a new password.
           </p>
         ) : null}
 
@@ -131,6 +149,7 @@ function AuthPage() {
               required
             />
           </Field>
+          {mode !== "forgot" ? (
           <Field label="Password">
             <ClayInput
               type="password"
@@ -142,10 +161,29 @@ function AuthPage() {
               required
             />
           </Field>
+          ) : null}
           <ClayButton type="submit" className="w-full" disabled={busy}>
-            {busy ? "Please wait…" : mode === "signin" ? "Sign In" : "Create Account"}
+            {busy ? "Please wait…" : mode === "forgot" ? "Send Reset Link" : mode === "signin" ? "Sign In" : "Create Account"}
           </ClayButton>
         </form>
+
+        {mode === "forgot" ? (
+          <button
+            type="button"
+            onClick={() => { setMode("signin"); setResetSent(false); }}
+            className="w-full text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Back to sign in
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => { setMode("forgot"); setResetSent(false); }}
+            className="w-full text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Forgot password?
+          </button>
+        )}
 
         {mode === "signup" ? (
           <p className="text-xs text-muted-foreground">
